@@ -14,7 +14,7 @@ private const val AUTHORIZATION_HEADER = "Authorization"
 @Component
 class JwtAuthFilter(
     private val jwtService: JwtService,
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -24,10 +24,10 @@ class JwtAuthFilter(
         if (headerValue != null && headerValue.startsWith(BEARER_PREFIX)) {
             if (jwtService.validateAccessToken(headerValue)) {
                 val userId = jwtService.getUserIdFromToken(headerValue)
-                
+
                 val authorities = listOf(SimpleGrantedAuthority("ROLE_USER"))
                 val auth = UsernamePasswordAuthenticationToken(userId, null, authorities)
-                
+
                 SecurityContextHolder.getContext().authentication = auth
             }
         }

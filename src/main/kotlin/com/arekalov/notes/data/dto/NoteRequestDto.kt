@@ -2,7 +2,7 @@ package com.arekalov.notes.data.dto
 
 import com.arekalov.notes.data.entity.NoteEntity
 import jakarta.validation.constraints.NotBlank
-import java.util.UUID
+import java.util.*
 
 fun NoteRequestDto.toNoteEntity(
     ownerId: UUID,

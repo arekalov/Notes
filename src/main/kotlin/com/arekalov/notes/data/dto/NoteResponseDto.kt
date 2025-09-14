@@ -2,7 +2,7 @@ package com.arekalov.notes.data.dto
 
 import com.arekalov.notes.data.entity.NoteEntity
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 data class NoteResponseDto(
     val id: UUID?,

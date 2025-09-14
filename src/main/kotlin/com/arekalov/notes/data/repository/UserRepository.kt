@@ -2,7 +2,7 @@ package com.arekalov.notes.data.repository
 
 import com.arekalov.notes.data.entity.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.UUID
+import java.util.*
 
 
 interface UserRepository : JpaRepository<UserEntity, UUID> {

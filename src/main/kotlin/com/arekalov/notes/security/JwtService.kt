@@ -20,7 +20,7 @@ class JwtService(
     @Value("\${jwt.secret}")
     private val jwtSecret: String,
 ) {
-    private val secretKey = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(jwtSecret))
+    private val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret))
 
     private val jwtsParser = Jwts.parser()
         .verifyWith(secretKey)

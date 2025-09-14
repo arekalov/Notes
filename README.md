@@ -31,7 +31,7 @@ Notes API is a RESTful web service for creating, reading, updating, and deleting
 | **Spring Data JPA** | 3.5.3 | Database operations |
 | **PostgreSQL** | 42.7.7 | Relational database |
 | **JWT** | 0.12.6 | JSON Web Tokens for authentication |
-| **Swagger/OpenAPI** | 2.2.0 | API documentation |
+| **Swagger/OpenAPI** | 2.3.0 | API documentation |
 | **Gradle** | 8.x | Build system |
 
 ## 📋 Requirements

@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 private const val REFRESH_TOKEN_DB_NAME = "refresh_token"
 

@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException
 class GlobalValidationHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationError(e: MethodArgumentNotValidException): ResponseEntity<Map<String,Any>> {
+    fun handleValidationError(e: MethodArgumentNotValidException): ResponseEntity<Map<String, Any>> {
         val errors = e.bindingResult.allErrors.map {
             it.defaultMessage ?: "Invalid value"
         }
@@ -25,7 +25,7 @@ class GlobalValidationHandler {
     }
 
     @ExceptionHandler(ResponseStatusException::class)
-    fun errorCodeException(e: ResponseStatusException): ResponseEntity<Map<String,Any>> {
+    fun errorCodeException(e: ResponseStatusException): ResponseEntity<Map<String, Any>> {
         return ResponseEntity
             .status(e.statusCode)
             .body(
