@@ -10,6 +10,9 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 private const val AUTH_PATH = "/auth/**"
+private const val SWAGGER_PATH = "/swagger-ui/**"
+private const val API_DOCS_PATH = "/v3/api-docs/**"
+private const val SWAGGER_HTML = "/swagger-ui.html"
 
 @Configuration
 class SecurityConfig(
@@ -23,6 +26,8 @@ class SecurityConfig(
         .authorizeHttpRequests { auth ->
             auth
                 .requestMatchers(AUTH_PATH)
+                .permitAll()
+                .requestMatchers(SWAGGER_PATH, API_DOCS_PATH, SWAGGER_HTML)
                 .permitAll()
                 .dispatcherTypeMatchers(
                     DispatcherType.ERROR,
