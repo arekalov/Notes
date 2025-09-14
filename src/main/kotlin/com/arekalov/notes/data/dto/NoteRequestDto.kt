@@ -1,6 +1,7 @@
 package com.arekalov.notes.data.dto
 
 import com.arekalov.notes.data.entity.NoteEntity
+import jakarta.validation.constraints.NotBlank
 import java.util.UUID
 
 fun NoteRequestDto.toNoteEntity(
@@ -14,9 +15,13 @@ fun NoteRequestDto.toNoteEntity(
 )
 
 data class NoteRequestDto(
+    @NotBlank
     val id: UUID?,
+
     val title: String,
+
     val content: String,
+
     val color: Long?,
 )
 

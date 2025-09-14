@@ -5,8 +5,10 @@ import com.arekalov.notes.data.entity.UserEntity
 import com.arekalov.notes.data.repository.RefreshTokenRepository
 import com.arekalov.notes.data.repository.UserRepository
 import jakarta.transaction.Transactional
+import org.springframework.http.HttpStatusCode
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.time.Instant
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
@@ -24,7 +26,7 @@ class AuthService(
     ): UserEntity {
         val user = userRepository.findByEmail(email = email)
         if (user != null) {
-            return user
+            throw ResponseStatusException(HttpStatusCode.valueOf(400), "This email already exists.")
         }
 
         return userRepository.save<UserEntity>(
@@ -46,7 +48,8 @@ class AuthService(
             throw BadCredentialsException("Invalid credentials.")
         }
 
-        val userId = user.id ?: throw IllegalStateException("User ID cannot be null")
+        val userId = user.id
+            ?: throw ResponseStatusException(HttpStatusCode.valueOf(401), "User id can't be null")
         val newAccessToken = jwtService.generateAccessToken(userId.toString())
         val newRefreshToken = jwtService.generateRefreshToken(userId.toString())
 
@@ -64,22 +67,23 @@ class AuthService(
     @Transactional
     fun refreshToken(refreshToken: String): TokenPair {
         if (!jwtService.validateRefreshToken(token = refreshToken)) {
-            throw IllegalArgumentException("Invalid refresh token.")
+            throw ResponseStatusException(HttpStatusCode.valueOf(401), "Invalid refresh token.")
         }
 
         val userId = UUID.fromString(jwtService.getUserIdFromToken(token = refreshToken))
         val user = userRepository.findById(userId).getOrNull()
-            ?: throw IllegalArgumentException("Invalid refresh token.")
+            ?: throw ResponseStatusException(HttpStatusCode.valueOf(401), "Invalid refresh token.")
 
-        val userIdNonNull = user.id ?: throw IllegalStateException("User ID cannot be null")
+        val userIdNonNull = user.id
+            ?: throw ResponseStatusException(HttpStatusCode.valueOf(401), "User id cannot be null.")
         val hashedToken = hashEncoder.encodeToken(refreshToken)
         val deletedCount = refreshTokenRepository.deleteByUserIdAndHashedToken(
             userId = userIdNonNull,
             hashedToken = hashedToken,
         )
-        
+
         if (deletedCount == 0) {
-            throw IllegalArgumentException("Invalid refresh token.")
+            throw ResponseStatusException(HttpStatusCode.valueOf(401), "Invalid refresh token.")
         }
 
         val newAccessToken = jwtService.generateAccessToken(userIdNonNull.toString())

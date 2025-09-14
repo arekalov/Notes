@@ -4,7 +4,9 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 private const val TYPE_CLAIM = "type"
@@ -69,7 +71,8 @@ class JwtService(
     }
 
     fun getUserIdFromToken(token: String): String {
-        val claims = parseTokenClaims(token) ?: throw IllegalStateException("Invalid user token")
+        val claims = parseTokenClaims(token)
+            ?: throw ResponseStatusException(HttpStatusCode.valueOf(401), "Invalid user token")
         return claims.subject
     }
 

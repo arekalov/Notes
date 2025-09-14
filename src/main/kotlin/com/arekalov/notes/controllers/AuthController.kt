@@ -3,6 +3,9 @@ package com.arekalov.notes.controllers
 import com.arekalov.notes.data.entity.UserEntity
 import com.arekalov.notes.security.AuthService
 import com.arekalov.notes.security.TokenPair
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +18,7 @@ class AuthController(
 ) {
     @PostMapping("/register")
     fun register(
-        @RequestBody body: AuthRequestDto,
+        @Valid @RequestBody body: AuthRequestDto,
     ): UserEntity {
         return authService.register(
             email = body.email,
@@ -25,7 +28,7 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(
-        @RequestBody body: AuthRequestDto,
+        @Valid @RequestBody body: AuthRequestDto,
     ): TokenPair {
         return authService.login(
             email = body.email,
@@ -44,7 +47,10 @@ class AuthController(
 }
 
 data class AuthRequestDto(
+    @field:Email(message = "Invalid email.")
     val email: String,
+
+    @field:NotBlank(message = "Password can't be blank.")
     val password: String,
 )
 
